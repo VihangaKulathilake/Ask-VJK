@@ -7,9 +7,7 @@ require('dotenv').config();
 const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const indexName = process.env.PINECONE_INDEX_NAME || 'ask-vjk';
-
-// Model config: gemini-embedding-2 is the flagship embedding model supporting MRL dimensionality controls
-const EMBEDDING_MODEL = 'models/gemini-embedding-2';
+const EMBEDDING_MODEL = 'models/gemini-embedding-001';
 const VECTOR_DIMENSION = 768;
 
 if (!PINECONE_API_KEY) {
@@ -24,7 +22,7 @@ if (!GEMINI_API_KEY) {
 // Function to call Gemini API for embedding
 async function getGeminiEmbedding(text) {
   const url = `https://generativelanguage.googleapis.com/v1beta/${EMBEDDING_MODEL}:embedContent?key=${GEMINI_API_KEY}`;
-  
+
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -38,17 +36,17 @@ async function getGeminiEmbedding(text) {
       outputDimensionality: VECTOR_DIMENSION
     })
   });
-  
+
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(`Gemini API returned status ${response.status}: ${errorText}`);
   }
-  
+
   const data = await response.json();
   if (!data.embedding || !data.embedding.values) {
     throw new Error(`Embedding values not found in response: ${JSON.stringify(data)}`);
   }
-  
+
   return data.embedding.values;
 }
 
@@ -58,11 +56,11 @@ function loadAndChunkData() {
   if (!fs.existsSync(dataPath)) {
     throw new Error(`profile.json not found at: ${dataPath}`);
   }
-  
+
   console.log('Loading profile.json...');
   const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
   const chunks = [];
-  
+
   // 1. Personal Info
   if (data.personal) {
     chunks.push({
@@ -74,7 +72,7 @@ Languages: ${data.personal.languages ? data.personal.languages.join(', ') : 'N/A
       metadata: { section: 'personal', type: 'info' }
     });
   }
-  
+
   // 2. Contact Info
   if (data.contact) {
     chunks.push({
@@ -89,7 +87,7 @@ GitHub: ${data.contact.github}`,
       metadata: { section: 'contact', type: 'info' }
     });
   }
-  
+
   // 3. Education
   if (data.education) {
     if (data.education.university) {
@@ -120,7 +118,7 @@ Z-Score: ${school.zScore}`,
       });
     }
   }
-  
+
   // 4. Experience
   if (Array.isArray(data.experience)) {
     data.experience.forEach((exp, idx) => {
@@ -134,7 +132,7 @@ Period: ${exp.period}`,
       });
     });
   }
-  
+
   // 5. Projects
   if (Array.isArray(data.projects)) {
     data.projects.forEach((proj, idx) => {
@@ -149,7 +147,7 @@ Technologies: ${proj.technologies ? proj.technologies.join(', ') : 'None'}`,
       });
     });
   }
-  
+
   // 6. Skills
   if (data.skills) {
     const skills = data.skills;
@@ -187,7 +185,7 @@ Tools: ${skills.tools ? skills.tools.join(', ') : 'None'}`,
       });
     }
   }
-  
+
   // 7. Core Competencies
   if (Array.isArray(data.coreCompetencies)) {
     chunks.push({
@@ -197,7 +195,7 @@ Competencies: ${data.coreCompetencies.join(', ')}`,
       metadata: { section: 'coreCompetencies' }
     });
   }
-  
+
   // 8. Achievements
   if (Array.isArray(data.achievements)) {
     data.achievements.forEach((ach, idx) => {
@@ -210,7 +208,7 @@ Result: ${ach.result}`,
       });
     });
   }
-  
+
   // 9. Leadership
   if (Array.isArray(data.leadership)) {
     data.leadership.forEach((lead, idx) => {
@@ -224,7 +222,7 @@ Period: ${lead.period}`,
       });
     });
   }
-  
+
   console.log(`Divided profile data into ${chunks.length} chunks.`);
   return chunks;
 }
@@ -232,21 +230,21 @@ Period: ${lead.period}`,
 async function main() {
   try {
     const chunks = loadAndChunkData();
-    
+
     console.log('Connecting to Pinecone...');
     const pc = new Pinecone({ apiKey: PINECONE_API_KEY });
-    
+
     // Check if index exists
     console.log('Retrieving Pinecone indexes list...');
     const indexList = await pc.listIndexes();
     const indexExists = indexList.indexes?.some(idx => idx.name === indexName);
-    
+
     if (!indexExists) {
       console.log(`Index "${indexName}" does not exist. Attempting to create it...`);
       try {
         await pc.createIndex({
           name: indexName,
-          dimension: VECTOR_DIMENSION, 
+          dimension: VECTOR_DIMENSION,
           metric: 'cosine',
           spec: {
             serverless: {
@@ -255,7 +253,7 @@ async function main() {
             }
           }
         });
-        
+
         console.log(`Index creation for "${indexName}" initiated. Waiting for it to become ready...`);
         let isReady = false;
         while (!isReady) {
@@ -276,10 +274,10 @@ async function main() {
     } else {
       console.log(`Index "${indexName}" already exists. Using it.`);
     }
-    
+
     const index = pc.index(indexName);
     const records = [];
-    
+
     console.log('\nGenerating embeddings using Gemini API (gemini-embedding-2)...');
     for (let i = 0; i < chunks.length; i++) {
       const chunk = chunks[i];
@@ -301,7 +299,7 @@ async function main() {
         throw err;
       }
     }
-    
+
     console.log(`\nUpserting ${records.length} records to Pinecone index "${indexName}"...`);
     // Upsert in batches of 10 to be safe and clean
     const batchSize = 10;
@@ -310,7 +308,7 @@ async function main() {
       console.log(`Upserting batch ${Math.floor(i / batchSize) + 1} (${batch.length} records)...`);
       await index.upsert({ records: batch });
     }
-    
+
     console.log('\nSuccessfully chunked, embedded, and stored all profile data in Pinecone database!');
   } catch (error) {
     console.error('\nAn error occurred during execution:', error);

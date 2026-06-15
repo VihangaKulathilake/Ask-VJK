@@ -1,0 +1,179 @@
+{
+  "personal": {
+    "fullName": "Vihanga Kulathilake",
+    "title": "Software Engineering Undergraduate",
+    "nationality": "Sri Lankan",
+    "languages": [
+      "English",
+      "Sinhala"
+    ]
+  },
+  "contact": {
+    "email": "kulathi-se22037@stu.kln.ac.lk",
+    "phone": "+94 71 851 9445",
+    "address": "164, Thibbatugoda, Ganemulla",
+    "portfolio": "YOUR_PORTFOLIO_URL",
+    "linkedin": "YOUR_LINKEDIN_URL",
+    "github": "YOUR_GITHUB_URL"
+  },
+  "education": {
+    "university": {
+      "name": "University of Kelaniya",
+      "degree": "BSc (Hons) in Software Engineering",
+      "gpa": 3.8259,
+      "period": "2024-Present",
+      "domains": [
+        "Net Centric Web Application",
+        "Data Science and Engineering",
+        "Health Informatics"
+      ]
+    },
+    "school": {
+      "name": "Ananda College",
+      "location": "Colombo 10",
+      "period": "2009-2022",
+      "alResults": "ABB",
+      "stream": "Physical Science",
+      "zScore": 1.6118
+    }
+  },
+  "experience": [
+    {
+      "organization": "Sawiya Organization",
+      "position": "Full-stack Developer",
+      "period": "2025-Present"
+    }
+  ],
+  "projects": [
+    {
+      "name": "DevGuardian",
+      "type": "Individual",
+      "status": "Ongoing",
+      "description": "AI-powered software quality and security intelligence platform.",
+      "technologies": [
+        "Next.js",
+        "TypeScript",
+        "Spring Boot",
+        "Java",
+        "PostgreSQL",
+        "Redis",
+        "RabbitMQ",
+        "JWT",
+        "Docker",
+        "FastAPI",
+        "Redux Toolkit"
+      ]
+    },
+    {
+      "name": "StayMate",
+      "type": "Individual",
+      "description": "Intelligent boarding marketplace with ML recommendations.",
+      "technologies": [
+        "React",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "MongoDB",
+        "FastAPI",
+        "Machine Learning",
+        "AWS S3"
+      ]
+    },
+    {
+      "name": "Bookfair Stall Reservation System",
+      "description": "Platform for stall booking, payments, and QR confirmations.",
+      "technologies": [
+        "React",
+        "Spring Boot",
+        "Material UI",
+        "Java",
+        "MySQL",
+        "PayPal SDK"
+      ]
+    },
+    {
+      "name": "TEDx-UoK",
+      "type": "Group",
+      "description": "Official event platform with SEO optimization and dynamic content management.",
+      "technologies": [
+        "React",
+        "TypeScript",
+        "Vite",
+        "Tailwind CSS",
+        "Supabase"
+      ]
+    }
+  ],
+  "skills": {
+    "programmingLanguages": [
+      "Java",
+      "Python",
+      "JavaScript",
+      "PHP",
+      "C",
+      "HTML",
+      "CSS"
+    ],
+    "frameworks": [
+      "Spring Boot",
+      "React",
+      "Next.js",
+      "Node.js",
+      "Express.js",
+      "FastAPI",
+      "Flutter"
+    ],
+    "databases": [
+      "MySQL",
+      "PostgreSQL",
+      "MongoDB",
+      "Redis",
+      "Supabase"
+    ],
+    "cloud": [
+      "AWS",
+      "Cloudinary"
+    ],
+    "tools": [
+      "GitHub",
+      "GitLab",
+      "Postman",
+      "Jira",
+      "Figma",
+      "Adobe Photoshop",
+      "Canva"
+    ]
+  },
+  "coreCompetencies": [
+    "Software Development",
+    "Full-stack Development",
+    "Machine Learning",
+    "Deep Learning",
+    "Database Management",
+    "Data Structures and Algorithms",
+    "Mobile Application Development"
+  ],
+  "achievements": [
+    {
+      "title": "Junior Hackathon 2025",
+      "result": "1st Runners-Up"
+    }
+  ],
+  "leadership": [
+    {
+      "organization": "Software Engineering Students' Association",
+      "role": "Executive Committee Member",
+      "period": "2024-2025"
+    },
+    {
+      "organization": "IEEE Student Branch University of Kelaniya",
+      "role": "Head of Industry Relations and Industrial Engagement",
+      "period": "2025-Present"
+    },
+    {
+      "organization": "IEEE Young Professionals Sri Lanka",
+      "role": "Project Coordinator - LETs Talk",
+      "period": "2026-Present"
+    }
+  ]
+}
